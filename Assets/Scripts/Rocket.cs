@@ -27,6 +27,30 @@ public class Rocket : MonoBehaviour {
         Rotate();
 	}
 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Friendly":
+                // do nothing
+                print("OK");
+                break;
+            case "Fuel":
+                print("Fuel Station");
+                break;
+            default:
+                print("dead");
+                // kill the player
+                break;
+
+
+
+        }
+    }
+
+
+
     private void Thrust()
     {
         if (Input.GetKey(KeyCode.Space)) // can thrust while rotating
@@ -50,12 +74,12 @@ public class Rocket : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.A))
         {
-            print("Rotating Left");
+            //print("Rotating Left");
             transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            print("Rotating right");
+           // print("Rotating right");
             transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
         rigidBody.freezeRotation = false;
