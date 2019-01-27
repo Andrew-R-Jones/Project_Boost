@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour {
+
 
     // SerializeField, editable in the inspector in unity, not other scripts
     [SerializeField] float rcsThrust = 100f; // rcs, reaction control system
@@ -13,6 +12,8 @@ public class Rocket : MonoBehaviour {
     Rigidbody rigidBody;
     AudioSource audio;
 
+    enum State { Alive, Dying, Transcending }
+    State state = State.Alive;
 
 
     // Use this for initialization
@@ -28,20 +29,24 @@ public class Rocket : MonoBehaviour {
 	}
 
 
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                // do nothing
-                print("OK");
                 break;
-            case "Fuel":
-                print("Fuel Station");
+            case "Finish":
+                state = State.Transcending;
+                Invoke("LoadNextScene",1f); // parameterize time
                 break;
             default:
                 print("dead");
-                // kill the player
+                SceneManager.LoadScene(0);
                 break;
 
 
